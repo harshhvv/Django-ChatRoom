@@ -2,4 +2,22 @@
 
 {%block content%}
 <h1>{{room.name}}</h1>
+<p>{{room.description}}</p>
+
+<div class="comment-wrapper">
+    <h3>Conversation</h3>
+    <hr>
+    {% for message in roomMessages %}
+    <div>
+        <small> {{message.user}} {{message.created | timesince}}</small> <br>
+        <small> {{message.body}}</small>
+    </div>
+    {%endfor%}
+</div>
+
+
+<div class="comment-form">
+    {%csrf_token%}
+    <input type="text" name="message" id="message">
+</div>
 {%endblock%}
