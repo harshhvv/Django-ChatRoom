@@ -1,0 +1,30 @@
+{%extends 'main.html'%}
+
+{%block content%}
+<style>
+    .profile-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .profile-column {
+        flex: 1;
+    }
+
+    .profile-column:nth-child(2) {
+        flex: 3;
+    }
+</style>
+<h3>{{user.username}}</h3>
+<div class="profile-container">
+    <div class="profile-column">
+        {%include 'base/topics_component.html'%}
+    </div>
+    <div class="profile-column">
+        {%include 'base/feed_component.html'%}
+    </div>
+    <div class="profile-column">
+        {%include 'base/activity_feed.html'%}
+    </div>
+</div>
+{% endblock content %}

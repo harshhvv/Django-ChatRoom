@@ -1,0 +1,39 @@
+{%extends "main.html"%}
+
+{%block content%}
+<hr>
+<style>
+    .home-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .home-column {
+        flex: 1;
+    }
+
+    .home-column:nth-child(2) {
+        flex: 3;
+    }
+</style>
+
+<div class="home-container">
+
+    <div class="home-column">
+        {% include 'base/topics_component.html' %}
+    </div>
+
+
+    <div class="home-column">
+        <h3>{{room_count}} rooms available</h3>
+        <a href=" {%url 'create-room' %}">Create Room</a>
+        <hr>
+        {% include 'base/feed_component.html' %}
+    </div>
+
+    <div class="home-column">
+        {% include 'base/activity_feed.html' %}
+    </div>
+
+
+    {%endblock%}
