@@ -11,16 +11,8 @@ from django.contrib.auth.decorators import (
 )  # decorator to require login for certain pages
 from django.contrib.auth.forms import UserCreationForm  # for registration
 
+
 # Create your views here.
-
-# rooms = [
-#     {"id": 1, "name": "Lets talk about Django"},
-#     {"id": 2, "name": "Lets talk about Python"},
-#     {"id": 3, "name": "Lets talk about JS"},
-#     {"id": 4, "name": "Lets talk about React"},
-# ]
-
-
 def loginPage(request):
     page = "login"
     if request.user.is_authenticated:
