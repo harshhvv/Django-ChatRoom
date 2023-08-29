@@ -108,15 +108,20 @@ def userProfile(request, id):
 @login_required(login_url="login")
 def createRoom(request):
     form = RoomForm()
+    topics = Topic.objects.all()
     # if request is POST, then save the form
     if request.method == "POST":
+        topic_name = request.POST.get("topic")
+        topic, created = Topic.objects.get_or_create(name=topic_name)
         form = RoomForm(request.POST)
-        if form.is_valid():
-            room = form.save(commit=False)
-            room.host = request.user
-            room.save()
-            return redirect("home")  # redirect to home page
-    context = {"form": form}
+        Room.objects.create(
+            host=request.user,
+            topic=topic,
+            name=request.POST.get("name"),
+            description=request.POST.get("description"),
+        )
+        return redirect("home")  # redirect to home page
+    context = {"form": form, "topics": topics}
     return render(request, "base/room_form.html", context)
 
 
@@ -124,14 +129,18 @@ def createRoom(request):
 def updateRoom(request, id):
     room = Room.objects.get(id=id)
     form = RoomForm(instance=room)
+    topics = Topic.objects.all()
     if request.user != room.host:
         return HttpResponse("<h1>You are not allowed to edit this room.</h1>")
     if request.method == "POST":
-        form = RoomForm(request.POST, instance=room)
-        if form.is_valid():
-            form.save()
-            return redirect("home")
-    context = {"form": form}
+        topic_name = request.POST.get("topic")
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        room.name = request.POST.get("name")
+        room.description = request.POST.get("description")
+        room.topic = topic
+        room.save()
+        return redirect("home")
+    context = {"form": form, "topics": topics}
     return render(request, "base/room_form.html", context)
 
 
@@ -157,3 +166,16 @@ def deleteMessage(request, id):
         return redirect("home")
     context = {"object": message}
     return render(request, "base/delete.html", context)
+
+
+@login_required(login_url="login")
+def updateUser(request):
+    # user = request.user
+    # form = UserForm(instance=user)
+    # if request.method == "POST":
+    #     form = UserForm(request.POST, request.FILES, instance=user)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect("home")
+    # context = {"form": form}
+    return render(request, "base/update-user.html")
