@@ -1,7 +1,7 @@
 from django.http import HttpResponse  # for testing
 from django.shortcuts import render, redirect
 from .models import Room, Topic, Message
-from .forms import RoomForm
+from .forms import RoomForm, UserForm
 from django.db.models import Q  # for search
 from django.contrib.auth.models import User  # for login and logout
 from django.contrib import messages  # §
@@ -170,12 +170,23 @@ def deleteMessage(request, id):
 
 @login_required(login_url="login")
 def updateUser(request):
-    # user = request.user
-    # form = UserForm(instance=user)
-    # if request.method == "POST":
-    #     form = UserForm(request.POST, request.FILES, instance=user)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("home")
-    # context = {"form": form}
-    return render(request, "base/update-user.html")
+    user = request.user
+    form = UserForm(instance=user)
+    if request.method == "POST":
+        form = UserForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("user-profile", id=user.id)
+    context = {"form": form}
+    return render(request, "base/update-user.html", context)
+
+
+
+def topicsPage(request):
+    q = request.GET.get("q") if request.GET.get("q") != None else ""
+    topics = Topic.objects.filter(name__icontains=q)
+    return render(request, "base/topics.html", {"topics": topics})
+
+def activityPage(request):
+    room_messages = Message.objects.all().order_by("-created")
+    return render(request, "base/activity.html", {"room_messages": room_messages})
