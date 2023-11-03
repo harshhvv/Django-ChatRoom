@@ -1,4 +1,4 @@
-# Dynamic Real-time Communication App (Aug 2023 – Sept 2023)
+# Dynamic Real-time Communication App 
 
 ![App Screenshot]()
 
