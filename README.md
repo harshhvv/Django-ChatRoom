@@ -1,6 +1,6 @@
 # Dynamic Real-time Communication App 
 
-![App Screenshot]()
+![App Screenshot](https://github.com/harshhvv/Django-ChatRoom/blob/master/django%20demo%20ss.png)
 
 ## Overview
 
